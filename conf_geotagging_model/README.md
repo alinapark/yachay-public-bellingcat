@@ -1,25 +1,24 @@
-# Yachay: Shared Knowledge
+# Project name: Yachay AI, Telegram Bot
 
-[![Cover](https://user-images.githubusercontent.com/29067628/197814413-90cc6585-4580-48a8-88e4-ee2413198a09.png)](https://www.yachay.ai/)
+## Team Members
+[Yachay AI team](https://www.yachay.ai/)
 
+## Tool Description
+We see an untapped potential in the development of OSINT tools for text-based geolocation. Hours of researchers' work to find, clean and process images/texts to identify a person's location could have been reduced to seconds with automated text analysis. 
 
-Yachay is an open-source platform for Machine Learning. It has collected decades worth of useful natural language data from traditional media (i.e. New York Times articles), social media (i.e. Twitter & Reddit), messenger channels, tech blogs, GitHub profiles and issues, the dark web, and legal proceedings, as well as the decisions and publications of government regulators and legislators all across the world.
+**As NLP developers, we decided to tackle this challenge by creating an environment:**
+1. For investigators to communicate with the models in the simplest way possible 
+2. For other developers to contribute to our project and help us improve the models
 
-Yachay has cleaned and annotated this data, prepared the infrastructure, and released a state-of-the-art Geolocation Detection tool. 
+This project is a new take on the [models](https://github.com/1712n/yachay-public/tree/master/conf_geotagging_model) previously released by Yachay AI: we are swapping the existing infrastructure with a ByT5 model, and setting up a simple User Interface for people to see it in action.
 
-This repository is an open call for all Machine Learning developers and researchers to help us build and improve upon the existing geotagging models. 
+Now, one can simply text our bot on telegram and receive an analysis - life doesn't get easier than that 😌😌😌
 
-## Geotagging Model How-Tos 
+## Installation
+**There is no need to install anything to use this project! Simply text our [telegram bot](https://t.me/YachayAi_Bot) at [@YachayAi_Bot](https://t.me/YachayAi_Bot)**
 
-### Training 💪
-To train your own model, follow the instructions in `training.ipynb` or run it with `train.py` in the terminal:
-```bash
-python train.py --data_dir <data_path> --save_prefix <model_path> --arch char_lstm --split_uids
---batch_size 128 --loss l1 --optimizer adamw --scheduler constant --lr 5e-4 --num_epoch 10 
---conf_estim --confidence_validation_criterion
-```
+In case you want to create your own version of the tool, the data sets can be found in the Google Drive [here](https://drive.google.com/file/d/1thkE-hgT3sDtZqILZH17Hyayy0hkk_jh/view?usp=share_link) and [here](https://drive.google.com/drive/folders/1P2QUGFBKaqdpZ4xAHmJMe2I57I94MJyO?usp=sharing).
 
-All arguments can be seen in [aux_files/args_parser.py](./aux_files/args_parser.py)
 
 #### Dependencies:
 - pytorch == 1.7.1
@@ -28,56 +27,43 @@ All arguments can be seen in [aux_files/args_parser.py](./aux_files/args_parser.
 - tqdm == 4.62.3
 - pandas == 1.0.3
 
-### Custom Data 📚
-To upload a custom dataset, you will need to implement a Dataloader in [data_loading.py](./data_loading.py). This Dataloader must return a `list of texts, a list of coordinates [longitude, latitude]`. Then, add the result to the `get_dataset` method in [aux_files/args_parser.py](./aux_files/args_parser.py), and you'll be able to select it with the `dataset_name` argument.
+The new, improved infrastructure created for this hackathon:
 
-For relevant data sets, please check the Existing Challenges section
+- `ByT5_model.py` - model implementation
+- `train_model.py` - training code
+- `utils.py` - inference code
 
-### Confidence 🔥
-To use confidence estimation, set the `conf_estim` and `confidence_validation_criterion` arguments to True. You can set the array to `model_save_band` to show the top predictions by `confidence_bands` (as a percentage from 0 to 100).
-Use `model_save_band` to save the model by the best metric value for the selected band.
+Heads Up: this project is a demo for the hackathon. More updates on the models will be in the [main repository](https://github.com/1712n/yachay-public/tree/master/conf_geotagging_model):)
 
-### Prediction 🔮
-An example of using the trained model is in [prediction.ipynb](./prediction.ipynb)
+## Usage
+To use the bot, follow the [link](https://t.me/YachayAi_Bot), or go to telegram and add @YachayAi_Bot
 
-### Current Scores
-Yachay current models achieved the following results:
-- Median Average Error (Haversine Distance) of 4.97km
-- Mean Average Error (Haversine Distance) of 541.92km 
+<img width="736" alt="step" src="https://user-images.githubusercontent.com/29067628/233823060-0561fbbf-3197-4523-a996-74fee3768c21.png">
 
-## Existing Challenges/Suggested Data Sets
-### Challenge 1 - 123 regions 🌎
+1. Click on "Start"
 
-The first suggested methodology (Challenge 1) on training the model is to look into the dataset of top most populated regions around the world.
-
-#### The dataset provided:
-- is an annotated corpus of 500k texts, as well as the respective geocoordinates
-- covers 123 regions
-- includes 5000 tweets per location
-
-**The data set is [here](https://drive.google.com/file/d/1thkE-hgT3sDtZqILZH17Hyayy0hkk_jh/view?usp=share_link)**
-
-![This is an image](https://media.tenor.com/lOPTx_JZJ3gAAAAC/the-office-steve-carell.gif)
-
-### Challenge 2 - 12 months 🌎
-
-Challenge 2 sets the goal to identify the correlation between the time/date of post, the content, and the location. 
-
-Time zone differences, as well as seasonality of the events, should be analyzed and used to predict the location. For example: snow is more likely to appear in the Northern Hemisphere, especially if in December. Rock concerts are more likely to happen in the evening and in bigger cities, so the time of the post about a concert should be used to identify the time zone of the author and narrow down the list of potential locations.
-
-#### The data set provided:
-- is a .json of >600.000 texts 
-- has been collected over the span of 12 months
-- covers 15 different time zones 
-- focuses on 6 countries (Cuba, Iran, Russia, North Korea, Syria, Venezuela)
-
-**The data set is [here](https://drive.google.com/drive/folders/1P2QUGFBKaqdpZ4xAHmJMe2I57I94MJyO?usp=sharing)**
-
-## Stargazers 
-[![Stargazers repo roster for @1712n/yachay-public](https://reporoster.com/stars/1712n/yachay-public)](https://github.com/1712n/yachay-public/stargazers)
+<img width="720" alt="s2" src="https://user-images.githubusercontent.com/29067628/233824316-f500b6ff-7dde-43a5-85e9-13f32139ca55.png">
 
 
-## Resources
+2. The bot introduces itself:)
+
+3. Now send a text - anything under 300 characters would work. Give the bot a couple of moments to reply
+
+4. <img width="718" alt="step3" src="https://user-images.githubusercontent.com/29067628/233823034-7eea115d-d90f-42ea-aa09-93509b2a8de8.png">
+
+5. Done ✅ - easy 😔😔😔
+
+
+## Additional Information
+
+
+
+The Telegram bot serves as a demo of the models' potential - it's a work-in-progress and exists for demonstration purposes only. 
+
+Still, we are providing all the [data and infrastructure code](https://github.com/1712n/yachay-public/tree/master/conf_geotagging_model) to make sure other developers can contribute:)
+
+
+
 ### Contact 📩
 
 If you would like to contact us with any questions, concerns, or feedback, help@yachay.ai is our email.
